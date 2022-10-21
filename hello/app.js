@@ -11,7 +11,9 @@ var app = express();                          //创建express应用
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));  //定义页面目录
-app.set('view engine', 'jade');                   //定义页面模版引擎
+// app.set('view engine', 'jade');                   //定义页面模版引擎
+app.engine('.html',require('express-art-template'))
+app.set('view engine', 'html');                   //更换页面模版引擎为html
 
 app.use(logger('dev'));                           //定义日志打印级别
 app.use(express.json());                          //定义JSON格式处理数据
