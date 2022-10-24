@@ -6,8 +6,9 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Hello' ,age:38});
 });
 
-/* GET error world page */
+/* GET error world page (error.jade)*/
 router.get('/world',function(req,res,next){
+  
   res.render('error',{
     message:"error world",
     error:{
@@ -16,16 +17,21 @@ router.get('/world',function(req,res,next){
     }
   })
 })
-// 路由模糊匹配  /west   /wet
+// 路由模糊匹配  /west   /wet         url
+
 router.get('/wes?t',function(req,res,next){
+  console.log("url",req.url)
+  console.log("query",req.query)
   res.render("index",{title:"模糊匹配?"})
 })
-// 路由模糊匹配  /west   /wesst /wessssst
-router.get('/wes+t',function(req,res,next){
+// 路由模糊匹配  /west   /wesst /wessssst       :id
+router.get('/wes+t/:id',function(req,res,next){
+  console.log("url",req.url)
   res.render("index",{title:"模糊匹配+"})
 })
-// 路由模糊匹配  /wes123t   /wesst /wesskidet
+// 路由模糊匹配  /wes123t   /wesst /wesskidet   query(只有get方式可以获取query参数，因为post参数在请求体中，不在url中)
 router.get('/wes*t',function(req,res,next){
+  console.log("query",req.query)
   res.render("index",{title:"模糊匹配*"})
 })
 // 路由模糊匹配  根据正则匹配   /west    /westdjisi  /djiwestdisf
@@ -48,3 +54,53 @@ router.get('/loop',function(req,res,next) {
   ]})
 })
 module.exports = router;
+
+// post路由
+router.post('/abc',function(req,res,next){
+  console.log("body",req.body)
+  res.send(req.cookies)
+  res.render('index',{title:'Express'})
+})
+
+
+// params
+router.get("/book/params/:id/:userId",function(req,res,next){
+  res.send(req.params)
+})
+
+
+// render
+router.get("/book/params/:id",function(req,res,next){
+  // res.send(req.params)
+  res.render('index',{ title: 'Hello' ,age:38},function(err,html){
+    // next(err)
+    console.log("==========")
+    console.log(err)
+  })
+})
+
+// res.json
+router.get("/book/json",function (req,res,next) {
+  res.json({
+    name:'json',
+    age:21,
+    hobby:['wa','da','i[']
+  })
+})
+
+// res.status
+router.get('/book/status',function(req,res,next){
+  res.status(304).end()
+})
+
+
+// res.redirect
+
+router.get('/book/book1',function(req,res,next){
+  console.log("book1")
+  res.redirect(302,'/book/book2')
+})
+router.get('/book/book2',function(req,res,next){
+  console.log("book2")
+  res.end()
+})
