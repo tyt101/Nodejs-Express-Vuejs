@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .wall{
+            position: relative;
+            background-color: darkslateblue;
+            width: 100vw;
+            height: 100vh;
+            text-align: center;
+        }
+        .wall .card{
+            position: absolute;
+            left: 200px;
+            top: 50px;
+            width: 200px;
+            height: 200px;
+            background-color: antiquewhite;
+            border-bottom-right-radius: 10px;
+        }
+        .wall .input{
+            position: absolute;
+            left: 50%;
+            bottom: 200px;
+            transform: translateX(-50%);
+        }
+        .form{
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+</head>
+<body>
+    <div class="wall">
+        <h1 style="padding: 20px;">快来写上您的愿望吧!</h1>
+        <div class="card">
+            <p class="name">{{name}}</p>
+            <section class="content">{{wishes}}</section>
+        </div>
+        <div class="input">
+            <form action="" class="form">
+                <input type="text" id="text" placeholder="请输入你的大名">
+                <input type="password" id="password" placeholder="许个愿望吧">
+                <button>提交</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        const emit = document.querySelector('.form button')
+        const text = document.getElementById('#text')
+        const pass = document.getElementById('#password')
+        emit.addEventListener('click',()=>{
+            // 调用接口发送数据text和pass
+
+            // 调用完成重新渲染数据
+        })
+    </script>
+</body>
+</html>
