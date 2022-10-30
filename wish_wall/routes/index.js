@@ -13,6 +13,6 @@ const IndexController = require('../controllers/index')
 // 定义首页路由
 router.get('/', IndexController.getList)
 // 提交表单路由
-// router.get('/add', IndexController.add) 
+router.post('/add', IndexController.add) 
 module.exports = router;
 

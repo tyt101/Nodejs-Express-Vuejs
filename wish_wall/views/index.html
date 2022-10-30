@@ -7,11 +7,26 @@
     <title>Document</title>
     <!-- 不知道为什么，引入失败了 -->
     <!-- <link rel="stylesheet" href="../public/stylesheets/index.css"> -->
-    
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            background-color: rebeccapurple;
+            
+        }
+        a{
+            color: black;
+        }
+        #container .item{
+            position: relative;
+            width: 200px;
+            height: 200px;
+        }
+    </style>
 </head>
 <body>
     <h2 class="title">快来写上您的愿望吧</h2>
-    <div id="contanier" data-list="{{list}}"></div>
+    <div id="container" data-list="{{list}}"></div>
     <form action="add" method="post" id="form" style="height:136px;">
         <input type="text" class="input" id="name" name="name" placeholder="说出你的大名">
         <input type="text" class="input" id="content" name="content" placeholder="许个愿吧">
@@ -20,18 +35,16 @@
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
     <script>
-        let container = document.querySelector("div")
+        let container = $ ('#container');
         var colors = ['#207de0','#42baec','#e3e197','#6cde47','#ecc733']
         var createItem = function(name,content){
             var color = colors[parseInt(Math.random()*5)]
-            let item = '<div>'+name+':'+content+'</div>'
-            container.append(item)
+            $ ('<div class="item"><p>' + name + '：</p><p>' + content + '</p><a href="#">关闭</a></div>').css ({'background-color': color}).appendTo (container);
         };
         var init = function(){
-            var list = document.querySelector("div").getAttribute('data-list')
+            var list = container.attr ('data-list');
             console.log(list)
             $.each(JSON.parse(list),function(i,v){
-                console.log(i,v)
                 createItem(v.name,v.content)
             })
         }
