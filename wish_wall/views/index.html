@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 不知道为什么，引入失败了 -->
+    <!-- <link rel="stylesheet" href="../public/stylesheets/index.css"> -->
+    
+</head>
+<body>
+    <h2 class="title">快来写上您的愿望吧</h2>
+    <div id="contanier" data-list="{{list}}"></div>
+    <form action="add" method="post" id="form" style="height:136px;">
+        <input type="text" class="input" id="name" name="name" placeholder="说出你的大名">
+        <input type="text" class="input" id="content" name="content" placeholder="许个愿吧">
+        <button type="submit" class="submit">提交</button>
+    </form>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+    <script>
+        let container = document.querySelector("div")
+        var colors = ['#207de0','#42baec','#e3e197','#6cde47','#ecc733']
+        var createItem = function(name,content){
+            var color = colors[parseInt(Math.random()*5)]
+            let item = '<div>'+name+':'+content+'</div>'
+            container.append(item)
+        };
+        var init = function(){
+            var list = document.querySelector("div").getAttribute('data-list')
+            console.log(list)
+            $.each(JSON.parse(list),function(i,v){
+                console.log(i,v)
+                createItem(v.name,v.content)
+            })
+        }
+        init()
+    </script>
+</body>
+</html>
