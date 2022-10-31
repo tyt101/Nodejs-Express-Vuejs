@@ -1,10 +1,13 @@
+const verifyMiddleware = require('./routes/middleware/verify')
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
+var IndexRouter = require('./routes/index');
+var WishRouter = require('./routes/wish');
+var AdminRouter = require('./routes/admin');
 var usersRouter = require('./routes/users');
 
 var app = express();
@@ -19,7 +22,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
+app.use('/', IndexRouter);
+app.use('/wish',verifyMiddleware.verifyToken ,WishRouter);
+app.use('/admin',verifyMiddleware.verifyToken , AdminRouter);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
