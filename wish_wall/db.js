@@ -15,4 +15,6 @@ var sequelize = new Sequelize(CONFIG.MYSQL.database,CONFIG.MYSQL.username,CONFIG
     },
     timezone:'+08:00'
 })
+// 验证数据库是否连接成功
+sequelize.authenticate().then(() => {console.log("数据库连接成功")}).catch(() => {console.log("数据库连接失败")})
 module.exports = sequelize
