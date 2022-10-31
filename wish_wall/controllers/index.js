@@ -16,7 +16,7 @@ function getList(req,res) {
     let tasks = {
         query: cb => {
             WishModel.findAll({
-                limit:10,
+                // limit:10,
                 order:[['created_at','DESC']]
             }).then(function(result){
                 let list = [];
