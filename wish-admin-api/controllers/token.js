@@ -10,7 +10,7 @@ const Token = {
      */
     encrypt:function(data,time){
         // jwt.sign传入加密的数据，tokenKey，到期时间
-        jwt.sign(data,tokenKey,{expiresIn:time})
+        return jwt.sign(data,tokenKey,{expiresIn:time})
     },
     decrypt:function(token){
         try{

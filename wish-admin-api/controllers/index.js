@@ -36,7 +36,9 @@ function login(req,res){
                     const adminInfo = {
                         id:result.id
                     }
+                    console.log('adminInfo',adminInfo)
                     let token = Token.encrypt(adminInfo,TOKEN_EXPIRE_SECOND)
+                    console.log('token',token)
                     resObj.data.token = token
                     cb(null,result.id)
                 }else{
