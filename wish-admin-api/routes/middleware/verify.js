@@ -3,6 +3,7 @@ const Constant = require('../../constant/constant')
 const exportObj = {
     verifyToken
 }
+module.exports = exportObj
 // 中间件 验证token
 // token是由用户登录，服务器端返回的
 function verifyToken(req,res,next){
