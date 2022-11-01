@@ -10,8 +10,9 @@ export default {
 }
 </script>
 
-<style style="scss" scoped>
-#app{
-  color: aqua;
+<style lang="scss">
+*{
+  padding: 0;
+  margin: 0;
 }
 </style>
