@@ -1,4 +1,4 @@
-const createRequest = require('../utils/request/index')
+import createRequest from '../utils/request/index' 
 
 // createRequest传入一个opt配置
 // axios({
@@ -18,3 +18,13 @@ const createRequest = require('../utils/request/index')
 //     method:'post',
     
 // })
+
+
+export function login(data){
+    console.log(data)
+    return createRequest({
+        method:'post',
+        url:'/api/login',
+        data,
+    })
+}

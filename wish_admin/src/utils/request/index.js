@@ -1,10 +1,8 @@
 import axios from 'axios'
 import instanceDefaultConfig from './instanceDefaultConfig'
 
-export default async function createRequest(opt){
+export default function createRequest(opt){
     const instance = axios.create(instanceDefaultConfig)
-
-
     // 暂时不对响应拦截器和请求拦截器做什么处理   TODO：之后需要处理再进行处理
     instance.interceptors.request.use(
         (config) => {
@@ -22,4 +20,13 @@ export default async function createRequest(opt){
     )
 
     return instance.request(opt)
+    // return axios({
+    //   method: opt?.method || 'get',
+    //   url: opt?.url,
+    //   data: opt?.data,
+    //   params:opt?.params,
+    //   headers:{
+    //     token:localStorage.getItem('token')
+    //   }
+    // })
 }
