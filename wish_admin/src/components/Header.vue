@@ -5,13 +5,13 @@
     </div>
     <div class="logo">许愿墙管理后台</div>
     <div class="header-right">
-        <el-dropdown>
+        <el-dropdown @command="handleLogout">
             <span class="el-dropdown-link">
                 {{loginData.name}}
                 <i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item>退出登录</el-dropdown-item>
+                <el-dropdown-item command="logout" >退出登录</el-dropdown-item>
             </el-dropdown-menu>
         </el-dropdown>
     </div>
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import {mapState, mapActions} from 'vuex'
 export default {
     name:'VHeader',
     data(){
@@ -31,8 +31,19 @@ export default {
         })
     },
     methods:{
+        ...mapActions({
+            setLoginData:'set_login_data'
+        }),
         handleMenuW(){
             this.$bus.$emit('elapseChange')
+        },
+        handleLogout(command){
+            switch(command){
+                case 'logout': {
+                    this.$router.push('/')
+                    this.setLoginData({})
+                }
+            }
         }
     }
 }

@@ -5,8 +5,17 @@
 </template>
 
 <script>
+import {mapActions} from 'vuex'
 export default {
-  name:'App'
+  name:'App',
+  created(){
+    this.setLoginData(JSON.parse(localStorage.getItem('loginStatus')))
+  },
+  methods:{
+    ...mapActions({
+      setLoginData:'set_login_data'
+    })
+  }
 }
 </script>
 
