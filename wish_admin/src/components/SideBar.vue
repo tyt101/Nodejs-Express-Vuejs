@@ -36,6 +36,7 @@ export default {
     name:'SideBar',
     data(){
         return{
+            // TODO：通过路由改造items信息
             items: [{
                     icon: 'el-icon-setting',
                     index: 'dashBoard',
