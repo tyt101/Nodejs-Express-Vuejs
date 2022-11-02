@@ -50,8 +50,10 @@ export default {
               password,
             }).then((res)=>{
               const {code,data} = res.data
+              console.log(data)
               if(code === 10000){
                 localStorage.setItem('token',data.token)
+                localStorage.setItem('name',data.name)
                 this.$router.push('/dashboard');
               }
             }).catch(err => {console.log('err',err)})

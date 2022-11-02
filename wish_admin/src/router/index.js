@@ -10,11 +10,16 @@ export default new VueRouter({
     {
         path:'/',
         component: () => import('../components/Home.vue'),
-        children:[
-            {
+        children:[{
                 path:'/dashboard',
-                component: () => import('../components/DashBoard.vue')
-            }
+                component: () => import('../views/DashBoard.vue')
+            },{
+                path:'/wish',
+                component: () => import('../views/Wish.vue')
+            },{
+                path:'/admin',
+                component: () => import('../views/Admin.vue')
+            },
         ]
     },{
         path:'/login',
