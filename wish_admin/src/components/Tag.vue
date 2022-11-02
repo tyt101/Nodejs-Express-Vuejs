@@ -73,6 +73,7 @@ a{
     position: relative;
     height: 30px;
     line-height: 30px;
+    background-color: white;
     ul{
         display: flex;
         margin-left: 10px;

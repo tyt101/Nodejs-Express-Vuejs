@@ -19,6 +19,7 @@
 
 <script>
 import {login} from '@/api/login'
+import {mapActions} from 'vuex'
 export default {
     name:'MyLogin',
     data(){
@@ -37,10 +38,10 @@ export default {
         }
       }
     },
-    // created(){
-      // this.handleLogin()
-    // },
     methods:{
+      ...mapActions({
+        setLoginData:'set_login_data'
+      }),
       handleLogin(){
         const {username,password} = this.formData
         this.$refs['loginForm'].validate(isOk => {
@@ -52,8 +53,9 @@ export default {
               const {code,data} = res.data
               console.log(data)
               if(code === 10000){
-                localStorage.setItem('token',data.token)
-                localStorage.setItem('name',data.name)
+                localStorage.setItem('loginStatus',JSON.stringify(data))
+                this.setLoginData(data)
+                console.log(data)
                 this.$router.push('/dashboard');
               }
             }).catch(err => {console.log('err',err)})

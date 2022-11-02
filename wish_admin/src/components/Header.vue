@@ -7,7 +7,7 @@
     <div class="header-right">
         <el-dropdown>
             <span class="el-dropdown-link">
-                {{name}}
+                {{loginData.name}}
                 <i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
@@ -19,12 +19,16 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
     name:'VHeader',
     data(){
-        return{
-            name:localStorage.getItem('name')
-        }
+        return{}
+    },
+    computed:{
+        ...mapState({
+            loginData: (state) => state.login.loginData
+        })
     },
     methods:{
         handleMenuW(){

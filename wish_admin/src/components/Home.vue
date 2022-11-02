@@ -29,6 +29,7 @@ export default {
   display: flex;
   &-content{
     flex: 1;
+    background-color: #f4f4f4;
   }
 }
 </style>
