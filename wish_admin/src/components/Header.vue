@@ -12,9 +12,35 @@
             </span>
             <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item command="logout" >退出登录</el-dropdown-item>
+                <el-dropdown-item command="update" >修改账户</el-dropdown-item>
             </el-dropdown-menu>
         </el-dropdown>
     </div>
+    <el-dialog 
+        title="修改账户"
+        :visible.sync="infoUpdateVisible"
+        width="40%"
+    >
+        <el-form :model="infoModel" :rules="rules" label-width="80px">
+            <el-form-item prop="name" label="名字:">
+                <el-input v-model="infoModel.name"></el-input>
+            </el-form-item>
+            <el-form-item label="用户名:">
+                <el-input v-model="infoModel.username" disabled></el-input>
+            </el-form-item>
+            <el-form-item prop="password" label="密码:" >
+                <el-input v-model="infoModel.password"></el-input>
+            </el-form-item>
+            <el-row type="flex" justify="end">
+                <el-col :span="4">
+                    <el-button>取消</el-button> 
+                </el-col>
+                <el-col :span="4">
+                    <el-button type="primary" @click="handleConfirm">确定</el-button>
+                </el-col>
+            </el-row>
+        </el-form>
+    </el-dialog>
   </div>
 </template>
 
@@ -23,7 +49,30 @@ import {mapState, mapActions} from 'vuex'
 export default {
     name:'VHeader',
     data(){
-        return{}
+        return{
+            infoModel: {},
+            rules: {
+                name:[{
+                    required:true,
+                    message:'名字不能为空',
+                    trigger:'blur'
+                },{
+                    min:1,
+                    max:8,
+                    message:'名字在1-8个字内',
+                    trigger:'change'
+                }],
+                password:[{
+                    validator:this.passwordValidator,
+                    trigger:'change',
+                },{
+                    required:true,
+                    validator:this.passwordValidator,
+                    trigger:'blur',
+                }]
+            },
+            infoUpdateVisible:false
+        }
     },
     computed:{
         ...mapState({
@@ -42,6 +91,28 @@ export default {
                 case 'logout': {
                     this.$router.push('/')
                     this.setLoginData({})
+                    break
+                }
+                case 'update': {
+                    this.infoUpdateVisible = true
+                    break
+                }
+            }
+        },
+        handleConfirm(){},
+        // 校验-密码
+        passwordValidator(rule, value, cb){
+            console.log(rule,value,cb)
+            if(!value){
+                cb(new Error('密码不能为空'))
+            }else if(value.length < 6 || value.length > 12){
+                cb(new Error('密码为6-12位'))
+            }else{
+                let regExp = new RegExp(/^(?![a-zA-z]+$)(?!\d+$)(?![!@+-.#$%^&*]+$)[a-zA-Z\d!@+-.#$%^&*]+$/,'g')
+                if(regExp.test(value)){
+                    cb()
+                }else{
+                    cb(new Error('密码包含字母，数字'))
                 }
             }
         }
