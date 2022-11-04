@@ -3,19 +3,19 @@
     <div class="login-container">
       <el-form ref="loginForm" :rules="rules" :model="formData" label-width="100px">
         <el-form-item prop="username">
-          <el-input v-model="formData.username" placeholder="请输入账号">
+          <el-input key="1" v-model="formData.username" placeholder="请输入账号">
           </el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input type="password" v-model="formData.password" placeholder="请输入密码"></el-input>
+          <el-input key="2" type="password" v-model="formData.password" placeholder="请输入密码"></el-input>
         </el-form-item>
         <el-form-item prop="password2" v-if="isRegister">
-          <el-input type="password" v-model="formData.password2" placeholder="请确认密码"></el-input>
+          <el-input key="3" type="password" v-model="formData.password2" placeholder="请确认密码"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button @click="handleLogin" v-if="!isRegister">登录</el-button>
-          <el-button @click="handleRegister">注册</el-button>
-          <el-button @click="handleReturn" v-if="isRegister">返回登陆</el-button>
+          <el-button key="4" @click="handleLogin" v-if="!isRegister">登录</el-button>
+          <el-button key="5" @click="handleRegister">注册</el-button>
+          <el-button key="6" @click="handleReturn" v-if="isRegister">返回登陆</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import {login} from '@/api/login'
+import {login,register} from '@/api/login'
 import {mapActions} from 'vuex'
 export default {
     name:'MyLogin',
@@ -63,6 +63,10 @@ export default {
               const {code,data} = res.data
               console.log(data)
               if(code === 10000){
+                this.$message({
+                  type:'succuss',
+                  message:'登陆成功 '
+                })
                 localStorage.setItem('loginStatus',JSON.stringify(data))
                 this.setLoginData(data)
                 console.log(data)
@@ -75,10 +79,37 @@ export default {
       },
       handleRegister(){
           this.isRegister = true
+          const {username,password,password2} = this.formData
+          this.$refs['loginForm'].validate(isOk => {
+            if(isOk){
+              register({
+                username,
+                password,
+                password2
+              }).then(res => {
+                const {code , msg} = res.data
+                if(code === 10000){
+                  this.$message({
+                    type:'success',
+                    message:'创建成功，即将返回登陆'
+                  })
+                  // TODO：注册成功，自动返回登陆
+                  setTimeout(() => {
+                    this.isRegister = false
+                  }, 1*2000);
+                }else{
+                  this.$message({
+                    type:'warning',
+                    message:msg
+                  })
+                }
+              }).catch(err => {
+                console.log("err",err)
+              })
+            }
+          })
 
-
-          // TODO：注册成功，自动返回登陆
-          // this.isRegister = false
+          
       },
       handleReturn(){
         this.isRegister = false
