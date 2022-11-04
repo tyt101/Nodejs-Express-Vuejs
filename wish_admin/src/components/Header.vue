@@ -59,6 +59,7 @@ export default {
     line-height: 80px;
     display: flex;
     &-right{
+        cursor: pointer;
         position: absolute;
         right: 30px;
         .el-dropdown-link{

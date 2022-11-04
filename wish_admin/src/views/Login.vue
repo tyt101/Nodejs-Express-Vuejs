@@ -9,8 +9,13 @@
         <el-form-item prop="password">
           <el-input type="password" v-model="formData.password" placeholder="请输入密码"></el-input>
         </el-form-item>
+        <el-form-item prop="password2" v-if="isRegister">
+          <el-input type="password" v-model="formData.password2" placeholder="请确认密码"></el-input>
+        </el-form-item>
         <el-form-item>
-          <el-button @click="handleLogin">登录</el-button>
+          <el-button @click="handleLogin" v-if="!isRegister">登录</el-button>
+          <el-button @click="handleRegister">注册</el-button>
+          <el-button @click="handleReturn" v-if="isRegister">返回登陆</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -26,7 +31,8 @@ export default {
       return{
         formData:{
           username:'',
-          password:''
+          password:'',
+          password2:'',
         },
         rules:{
           username:[{
@@ -34,8 +40,12 @@ export default {
           }],
           password:[{
             required:true,message:'请输入密码',trigger:'blur'
+          }],
+          password2:[{
+            required:true,message:'请确认密码',trigger:'blur'
           }]
-        }
+        },
+        isRegister:false
       }
     },
     methods:{
@@ -62,6 +72,16 @@ export default {
           }
         })
         
+      },
+      handleRegister(){
+          this.isRegister = true
+
+
+          // TODO：注册成功，自动返回登陆
+          // this.isRegister = false
+      },
+      handleReturn(){
+        this.isRegister = false
       }
     }
 }

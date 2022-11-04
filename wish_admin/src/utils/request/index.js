@@ -20,13 +20,4 @@ export default function createRequest(opt){
     )
 
     return instance.request(opt)
-    // return axios({
-    //   method: opt?.method || 'get',
-    //   url: opt?.url,
-    //   data: opt?.data,
-    //   params:opt?.params,
-    //   headers:{
-    //     token:localStorage.getItem('token')
-    //   }
-    // })
 }
