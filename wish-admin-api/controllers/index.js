@@ -8,22 +8,19 @@ const TOKEN_EXPIRE_SECOND = 60*60
 
 
 function login(req,res){
-    console.log("进去了login")
     const resObj = Common.clone (Constant.DEFAULT_SUCCESS);
     let tasks = {
         checkParams : cb => {
             Common.checkParams(req.body,['username','password'],cb)
         },
         query:['checkParams', (results,cb) => {
-            console.log('req.body.username',req.body.username)
-            console.log('req.body.password',req.body.password)
+            console.log('results',results)
             AdminModel.findOne({
                 where:{
                     username:req.body.username,
                     password:req.body.password
                 }
             }).then(function(result){
-                console.log("result",result)
                 if(result){
                     resObj.data = {
                         id:result.id,
@@ -70,9 +67,63 @@ function login(req,res){
     }
     Common.autoFn(tasks,res,resObj)
 }
-
+function register(req,res){
+    // console.log(req)
+    const resObj = Common.clone(Constant.DEFAULT_SUCCESS)
+    let tasks = {
+        checkParams: cb => {
+            console.log("checkParams",req.body.username,req.body.password)
+            Common.checkParams(req.body,['username','password','password2'],cb)
+        },
+        query:['checkParams', (results,cb) => {
+            AdminModel.findOne({
+                where:{
+                    username:req.body.username
+                }
+            }).then(function(result){
+                // 该用户已经存在
+                if(result){
+                    resObj.data = {
+                        name:result.name
+                    }
+                    cb(null,Constant.ADMIN_EXIST)
+                }else{
+                    cb()
+                }
+            }).catch(function(err){
+                console.log('err',err)
+                cb(Constant.DEFAULT_ERROR)
+            })
+        }],
+        createAdmin: ['query',(results,cb) => {
+            console.log("createAdmin",results)
+            if(results['query']){
+                cb(Constant.ADMIN_EXIST)
+            }else{
+                AdminModel.create({
+                    username:req.body.username,
+                    password:req.body.password,
+                    name:'新朋友',
+                    role:2,
+                    lastLoginAt:null,
+                    createdAt:new Date()
+                }).then(result => {
+                    if(result){
+                        cb()
+                    }else{
+                        cb(Constant.DEFAULT_ERROR)
+                    }
+                }).catch(err => {
+                    cb(Constant.DEFAULT_ERROR)
+                })
+            }
+        }]
+    }
+    Common.autoFn(tasks,res,resObj)
+}
 
 let exportObj = {
-    login
+    login,
+    register
 }
 module.exports = exportObj

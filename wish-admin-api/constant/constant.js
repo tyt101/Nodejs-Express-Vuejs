@@ -34,6 +34,11 @@ const obj = {
     ADMIN_NOT_EXSIT: {
       code: 103,
       msg: '管理员信息不存在'
+    },
+    // 定义错误返回-账户已存在
+    ADMIN_EXIST: {
+      code: 104,
+      msg: '该账户已被注册'
     }
   };
   // 导出对象，给其他方法调用

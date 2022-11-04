@@ -25,6 +25,9 @@ module.exports = db.define('Admin',{
     },
     lastLoginAt:{
         type:Sequelize.DATE
+    },
+    createdAt:{
+        type:Sequelize.DATE
     }
 },{
     underscored:true,
