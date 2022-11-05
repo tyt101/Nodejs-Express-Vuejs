@@ -27,7 +27,7 @@ export function register(data){
 
 export function update(data) {
     return createRequest({
-        method:'post',
+        method:'put',
         url:'/api/update',
         data
     })

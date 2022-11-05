@@ -79,10 +79,7 @@ export default {
         })
     },
     created(){
-        this.infoModel = {
-            name:this.loginData.name,
-            username:this.loginData.username,
-        }
+        this.resetFields()
     },
     methods:{
         ...mapActions({
@@ -105,21 +102,33 @@ export default {
             }
         },
         handleClose(){
-            this.infoUpdateVisible = false
-            this.infoModel = {}
-            this.$refs.formData.resetFields()
+            this.resetFields()
         },
         handleConfirm(){
             this.$refs.formData.validate(isOk => {
                 if(isOk){
-                    console.log("handleConfirm")
                     update(this.infoModel).then(res => {
-                        console.log(res)
+                        const {data:{data:loginData}} = res
+                        this.setLoginData(loginData)
+                        localStorage.setItem('loginStatus',JSON.stringify(loginData))
                     }).catch(err => {
-                        console.log(err)
+                        this.$message({
+                            type:'error',
+                            message:err
+                        })
+                    }).finally(() => {
+                        this.resetFields()
                     })
                 }
             })
+        },
+        resetFields(){
+            this.infoUpdateVisible = false
+            this.infoModel = {
+                name:this.loginData.name,
+                username:this.loginData.username,
+            }
+            this.$refs.formData.resetFields()
         },
         // 校验-密码
         passwordValidator(rule, value, cb){
