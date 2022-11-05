@@ -14,7 +14,6 @@ function login(req,res){
             Common.checkParams(req.body,['username','password'],cb)
         },
         query:['checkParams', (results,cb) => {
-            console.log('results',results)
             AdminModel.findOne({
                 where:{
                     username:req.body.username,
@@ -48,6 +47,7 @@ function login(req,res){
         }],
         writeLastLoginAt: ['query',function(results,cb){
             let adminId = results['query']
+            console.log("writeLastLoginAt__adminId",adminId)
             AdminModel.update({
                 lastLoginAt:new Date()
             },{
@@ -86,9 +86,9 @@ function register(req,res){
                     resObj.data = {
                         name:result.name
                     }
-                    cb(null,Constant.ADMIN_EXIST)
+                    cb(Constant.ADMIN_EXIST)
                 }else{
-                    cb()
+                    cb(null,Constant.DEFAULT_SUCCESS)
                 }
             }).catch(function(err){
                 console.log('err',err)
@@ -97,7 +97,7 @@ function register(req,res){
         }],
         createAdmin: ['query',(results,cb) => {
             console.log("createAdmin",results)
-            if(results['query']){
+            if(results['query'] === Constant.ADMIN_EXIST){
                 cb(Constant.ADMIN_EXIST)
             }else{
                 AdminModel.create({
@@ -121,9 +121,59 @@ function register(req,res){
     }
     Common.autoFn(tasks,res,resObj)
 }
+// 暂时有点问题。再看一下Sequelize文档
+function update(req,res) {
+    const resObj = Common.clone (Constant.DEFAULT_SUCCESS)
+    let tasks = {
+        checkParams : cb => {
+            Common.checkParams(req.body,['name','username','password'],cb)
+        },
+        query: ['checkParams', (results, cb) => {
+            // let {username} = JSON.parse(localStorage.getItem('loginStatus'))
+            AdminModel.findOne({
+                where : {
+                    username:req.body.username,
+                }
+            }).then(function(result){
+                console.log("result-----",result)
 
+                console.log(result.id)
+                if(result){
+                    cb(null,result.id)
+                }else{
+                    cb(Constant.ADMIN_NOT_EXSIT)
+                }
+            }).catch(function(err){
+                cb(Constant.DEFAULT_ERROR)
+            })
+        }],
+        updateInfo : ['query', (results, cb) => {
+            let adminId = results['query']
+            console.log("adminId",adminId)
+            AdminModel.update({
+                name:req.body.name,
+                password:req.body.password
+            },{
+                where: {
+                    id:adminId
+                }
+            }).then(function(result){
+                if(result){
+                    console.log("修改了吗",result)
+                    cb(null)
+                }else{
+                    cb(Constant.DEFAULT_ERROR)
+                }
+            }).catch(err => {
+                cb(Constant.DEFAULT_ERROR)
+            })
+        }]
+    }
+    Common.autoFn(tasks,res,resObj)
+}
 let exportObj = {
     login,
-    register
+    register,
+    update
 }
 module.exports = exportObj

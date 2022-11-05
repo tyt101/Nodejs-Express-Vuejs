@@ -11,4 +11,7 @@ router.post('/login', IndexController.login)
 // 注册模块路由
 router.post('/register', IndexController.register)
 
+
+// 修改账户信息模块路由
+router.post('/update', IndexController.update)
 module.exports = router;
