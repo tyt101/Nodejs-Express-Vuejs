@@ -134,11 +134,16 @@ function update(req,res) {
                 where : {
                     username:req.body.username,
                 }
-            }).then(function(result){
-                console.log("result-----",result)
-
-                console.log(result.id)
+            }).then(function(result){                
                 if(result){
+                    resObj.data = {
+                        id:result.id,
+                        username:result.username,
+                        name:result.name,
+                        role:result.role,
+                        lastLoginAt:dateFormat(result.lastLoginAt,'yyyy-mm-dd HH:MM:ss'),
+                        createdAt:dateFormat(result.createdAt,'yyyy-mm-dd HH:MM:ss')
+                    };
                     cb(null,result.id)
                 }else{
                     cb(Constant.ADMIN_NOT_EXSIT)
@@ -158,9 +163,10 @@ function update(req,res) {
                     id:adminId
                 }
             }).then(function(result){
+                console.log("result",result)
                 if(result){
-                    console.log("修改了吗",result)
-                    cb(null)
+                    resObj.data.name = req.body.name
+                    cb(null,Constant.DEFAULT_SUCCESS)
                 }else{
                     cb(Constant.DEFAULT_ERROR)
                 }
