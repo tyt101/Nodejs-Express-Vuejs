@@ -21,7 +21,7 @@
         :visible.sync="infoUpdateVisible"
         width="40%"
     >
-        <el-form :model="infoModel" :rules="rules" label-width="80px">
+        <el-form :model="infoModel" :rules="rules" label-width="80px" ref="formData">
             <el-form-item prop="name" label="名字:">
                 <el-input v-model="infoModel.name"></el-input>
             </el-form-item>
@@ -33,7 +33,7 @@
             </el-form-item>
             <el-row type="flex" justify="end">
                 <el-col :span="4">
-                    <el-button>取消</el-button> 
+                    <el-button @click="handleClose">取消</el-button> 
                 </el-col>
                 <el-col :span="4">
                     <el-button type="primary" @click="handleConfirm">确定</el-button>
@@ -46,6 +46,7 @@
 
 <script>
 import {mapState, mapActions} from 'vuex'
+import {update} from '@/api/login'
 export default {
     name:'VHeader',
     data(){
@@ -55,7 +56,6 @@ export default {
                 name:[{
                     required:true,
                     message:'名字不能为空',
-                    trigger:'blur'
                 },{
                     min:1,
                     max:8,
@@ -68,7 +68,6 @@ export default {
                 },{
                     required:true,
                     validator:this.passwordValidator,
-                    trigger:'blur',
                 }]
             },
             infoUpdateVisible:false
@@ -78,6 +77,12 @@ export default {
         ...mapState({
             loginData: (state) => state.login.loginData
         })
+    },
+    created(){
+        this.infoModel = {
+            name:this.loginData.name,
+            username:this.loginData.username,
+        }
     },
     methods:{
         ...mapActions({
@@ -99,7 +104,23 @@ export default {
                 }
             }
         },
-        handleConfirm(){},
+        handleClose(){
+            this.infoUpdateVisible = false
+            this.infoModel = {}
+            this.$refs.formData.resetFields()
+        },
+        handleConfirm(){
+            this.$refs.formData.validate(isOk => {
+                if(isOk){
+                    console.log("handleConfirm")
+                    update(this.infoModel).then(res => {
+                        console.log(res)
+                    }).catch(err => {
+                        console.log(err)
+                    })
+                }
+            })
+        },
         // 校验-密码
         passwordValidator(rule, value, cb){
             console.log(rule,value,cb)

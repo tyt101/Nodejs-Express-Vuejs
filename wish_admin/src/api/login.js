@@ -23,3 +23,12 @@ export function register(data){
         data,
     })
 }
+
+
+export function update(data) {
+    return createRequest({
+        method:'post',
+        url:'/api/update',
+        data
+    })
+}

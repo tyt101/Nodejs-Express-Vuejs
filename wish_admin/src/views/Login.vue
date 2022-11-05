@@ -61,7 +61,6 @@ export default {
               password,
             }).then((res)=>{
               const {code,data} = res.data
-              console.log(data)
               if(code === 10000){
                 this.$message({
                   type:'succuss',
@@ -69,7 +68,6 @@ export default {
                 })
                 localStorage.setItem('loginStatus',JSON.stringify(data))
                 this.setLoginData(data)
-                console.log(data)
                 this.$router.push('/dashboard');
               }
             }).catch(err => {console.log('err',err)})
